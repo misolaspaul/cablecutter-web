@@ -1,0 +1,529 @@
+/* Layout: YouTube-style dark app — top bar, tab chips, then horizontal rows, a grid or the guide.
+   Deliberately single-theme (dark), like the Android app and the YouTube TV look it follows. */
+:root {
+  --bg: #0f0f0f;
+  --surface: #272727;
+  --surface-hi: #3a3a3a;
+  --text: #f1f1f1;
+  --muted: #aaaaaa;
+  --red: #ff0000;
+  --spark: #ffd54f;
+  --font: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --card: 180px;
+  color-scheme: dark;
+}
+@media (min-width: 900px) {
+  :root {
+    --card: 230px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.35 var(--font);
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px var(--gutter-r) 4px var(--gutter-l);
+  min-height: 56px;
+}
+.logo {
+  width: 34px;
+  height: 38px;
+  flex: none;
+}
+.top-bar h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.icon-button {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  flex: none;
+}
+.icon-button svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+.icon-button:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+.icon-button.on {
+  color: var(--red);
+}
+.search {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 22px;
+  border: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px; /* keeps iOS from zooming in on focus */
+}
+
+/* Tab chips */
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px var(--gutter-r) 8px var(--gutter-l);
+  flex: none;
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  flex: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.chip.selected {
+  background: var(--text);
+  color: var(--bg);
+}
+.guide-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  padding: 2px var(--gutter-r) 6px var(--gutter-l);
+  font-weight: 500;
+  cursor: pointer;
+}
+.guide-toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--red);
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Home rows */
+.row h2 {
+  margin: 14px var(--gutter-r) 6px var(--gutter-l);
+  font-size: 20px;
+  font-weight: 700;
+}
+.row-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px var(--gutter-r) 8px var(--gutter-l);
+}
+.row-scroll::-webkit-scrollbar {
+  display: none;
+}
+.row-scroll .card {
+  width: var(--card);
+  flex: none;
+}
+
+/* Grid of a category, favorites or search results */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--card) - 20px), 1fr));
+  gap: 14px 10px;
+  padding: 8px var(--gutter-r) 24px var(--gutter-l);
+}
+
+/* Card */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  border-radius: 12px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+}
+.card:hover .thumb {
+  outline: 2px solid rgb(255 255 255 / 0.5);
+}
+.thumb img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+.initials {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.see-all {
+  font-weight: 500;
+  font-size: 17px;
+}
+.badge {
+  position: absolute;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fff;
+}
+.status {
+  top: 6px;
+  left: 6px;
+}
+.status.live {
+  background: var(--red);
+}
+.status.offline {
+  background: #555;
+}
+.quality {
+  right: 6px;
+  bottom: 8px;
+  background: rgb(0 0 0 / 0.8);
+}
+.fav {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 18px;
+  height: 18px;
+  fill: var(--red);
+}
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgb(255 255 255 / 0.25);
+}
+.progress > span {
+  display: block;
+  height: 100%;
+  background: var(--red);
+}
+.card .title {
+  font-weight: 500;
+}
+.card .title,
+.card .line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.line {
+  font-size: 13px;
+}
+.muted {
+  color: var(--muted);
+}
+
+/* TV guide: one scroller; channel column and time header stick */
+.guide {
+  --channel: 150px;
+  height: 100%;
+  overflow: auto;
+  padding-left: var(--gutter-l);
+  padding-bottom: 24px;
+}
+@media (min-width: 900px) {
+  .guide {
+    --channel: 220px;
+  }
+}
+.guide-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  width: calc(var(--channel) + var(--timeline));
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.guide-head span {
+  flex: none;
+  padding: 8px 6px;
+}
+.guide-corner {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  flex: none;
+  width: var(--channel);
+  background: var(--bg);
+}
+.guide-row {
+  display: flex;
+  height: 64px;
+  margin-bottom: 4px;
+  width: calc(var(--channel) + var(--timeline));
+}
+.guide-channel {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  flex: none;
+  width: var(--channel);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  margin-right: 4px;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: -16px 0 0 var(--bg); /* covers programmes scrolling under the gutter */
+  font-weight: 500;
+  font-size: 14px;
+}
+.guide-channel img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex: none;
+}
+.guide-channel span {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.guide-timeline {
+  position: relative;
+  flex: none;
+  width: var(--timeline);
+}
+.programme {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background: var(--surface);
+  /* clip, not hidden: hidden would make each cell its own scroller and break the sticky text */
+  overflow: clip;
+}
+.programme.now {
+  background: var(--surface-hi);
+}
+.programme:hover {
+  outline: 2px solid rgb(255 255 255 / 0.5);
+}
+/* Slides along so the title stays readable when the programme began left of the view */
+.programme-text {
+  position: sticky;
+  left: calc(var(--channel) + 20px);
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  max-width: 100%;
+  padding: 0 10px;
+}
+.programme-title {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.programme.now .programme-title {
+  font-weight: 700;
+}
+.programme-time {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.guide-now {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--red);
+  z-index: 1;
+  pointer-events: none;
+}
+.guide-none {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  left: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Player */
+.player {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #000;
+}
+.player video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+.player-bar {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  padding: calc(8px + env(safe-area-inset-top, 0px)) var(--gutter-r) 32px var(--gutter-l);
+  background: linear-gradient(rgb(0 0 0 / 0.75), transparent);
+}
+.player-info {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 6px 0;
+}
+.player-info h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.player-info p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.progress.wide {
+  position: relative;
+  display: block;
+  max-width: 360px;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+.player-error {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  white-space: pre-line;
+  color: rgb(255 255 255 / 0.75);
+  pointer-events: none;
+}
+.lock-shield {
+  position: absolute;
+  inset: 0;
+}
+.unlock {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: calc(var(--gutter-r) + 4px);
+  background: rgb(0 0 0 / 0.6);
+}
+
+/* States */
+.empty {
+  padding: 48px var(--gutter-r) 0 var(--gutter-l);
+  color: var(--muted);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 30vh auto 0;
+  border: 4px solid var(--surface);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+.toast {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  translate: -50% 0;
+  max-width: calc(100% - 32px);
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  color: #0f0f0f;
+  font-weight: 500;
+}
+.more {
+  height: 1px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 3s;
+  }
+}

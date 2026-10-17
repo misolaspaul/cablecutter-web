@@ -1,0 +1,21 @@
+{
+  "name": "cablecutter-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "data": "node scripts/build-data.mjs",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "hls.js": "1.6.2",
+    "preact": "10.26.5"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "2.10.1",
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
+  }
+}
